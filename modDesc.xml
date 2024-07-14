@@ -25,7 +25,7 @@ HEAVY
 
 These states can be manually triggered at any time with the console command "gsMoreFogSet <STATE>".
 
-NOTE: This mod was tested on only a handful of maps with and without the Relit mod (from ModHub).
+NOTE: This mod was tested on only a handful of maps with and without the Relight mod (from ModHub).
 As such, different maps with different lighting settings, and any mods which modify the lighting,
 can have unintended visual interactions. Fog in FS22 is a bit finicky to work with, and the values
 provided by this mod may not work every scenario.
@@ -52,7 +52,7 @@ HEAVY
 
 Diese Zustände können jederzeit manuell mit dem Konsolenbefehl „gsMoreFogSet <STATE>“ ausgelöst werden.
 
-HINWEIS: Dieser Mod wurde nur auf einer Handvoll Karten mit und ohne den Relit-Mod (von ModHub) getestet.
+HINWEIS: Dieser Mod wurde nur auf einer Handvoll Karten mit und ohne den Relight Mod (von ModHub) getestet.
 Daher verschiedene Karten mit unterschiedlichen Beleuchtungseinstellungen und alle Mods, die die Beleuchtung
 modifizieren, kann zu unbeabsichtigten visuellen Interaktionen führen. Die Arbeit mit Nebel im FS22 und
 seinen Werten ist etwas knifflig Die von diesem Mod bereitgestellten Funktionen funktionieren möglicherweise
@@ -80,7 +80,7 @@ HEAVY
 
 Эти состояния можно активировать вручную в любое время с помощью консольной команды «gsMoreFogSet <STATE>».
 
-ПРИМЕЧАНИЕ. Этот мод был протестирован только на нескольких картах с модом Relit и без него (из ModHub).
+ПРИМЕЧАНИЕ. Этот мод был протестирован только на нескольких картах с модом Relight и без него (из ModHub).
 Таким образом, разные карты с разными настройками освещения и любые моды, изменяющие освещение,
 могут иметь непреднамеренные визуальные взаимодействия. С туманом в FS22 немного сложно работать, и значения
 предоставляемые этим модом, могут работать не во всех сценариях.
