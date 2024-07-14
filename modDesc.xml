@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<modDesc descVersion="64">
+    <author>RichOPick</author>
+
+    <version>0.0.1.0</version>
+
+    <title>
+        <en>More Fog</en>
+        <de>Mehr Nebel</de>
+        <ru>Больше тумана</ru>
+    </title>
+
+    <description>
+        <en>
+<![CDATA[
+This mod adds various fog states to the game depending on weather and time of day. In general, 
+all fog states have a greatly increased density of fog.
+
+Five states are possible:
+NONE - No fog at all
+HAZE - Default game/map fog
+LIGHT
+MEDIUM
+HEAVY
+
+These states can be manually triggered at any time with the console command "gsMoreFogSet <STATE>".
+
+NOTE: This mod was tested on only a handful of maps with and without the Relit mod (from ModHub).
+As such, different maps with different lighting settings, and any mods which modify the lighting,
+can have unintended visual interactions. Fog in FS22 is a bit finicky to work with, and the values
+provided by this mod may not work every scenario.
+
+If the fog is too bright or too dark, disable it via the "gsMoreFogSet NONE" command, or uninstall
+the mod.
+
+In the future I hope to create UI setting with global scalers for density and height, but this early
+version does not contain that. I also hope to introduce a "Foggy" weather state, where heavy fog will
+remain present throughout the day.
+]]>
+        </en>
+        <de>
+<![CDATA[
+Dieser Mod fügt dem Spiel je nach Wetter und Tageszeit verschiedene Nebelzustände hinzu. Allgemein, 
+Alle Nebelstaaten weisen eine stark erhöhte Nebeldichte auf.
+
+Fünf Zustände sind möglich:
+NONE - Überhaupt kein Nebel
+HAZE - Standard-Spiel-/Kartennebel
+LIGHT
+MEDIUM
+HEAVY
+
+Diese Zustände können jederzeit manuell mit dem Konsolenbefehl „gsMoreFogSet <STATE>“ ausgelöst werden.
+
+HINWEIS: Dieser Mod wurde nur auf einer Handvoll Karten mit und ohne den Relit-Mod (von ModHub) getestet.
+Daher verschiedene Karten mit unterschiedlichen Beleuchtungseinstellungen und alle Mods, die die Beleuchtung
+modifizieren, kann zu unbeabsichtigten visuellen Interaktionen führen. Die Arbeit mit Nebel im FS22 und
+seinen Werten ist etwas knifflig Die von diesem Mod bereitgestellten Funktionen funktionieren möglicherweise
+nicht in jedem Szenario.
+
+Wenn der Nebel zu hell oder zu dunkel ist, deaktivieren Sie ihn über „gsMoreFogSet NONE“-Befehl oder
+deinstallieren Sie den Mod.
+
+Ich hoffe, in Zukunft eine UI-Einstellung mit globalen Skalierern für Dichte und Höhe erstellen zu können,
+aber so früh Version enthält das nicht. Ich hoffe auch, einen „nebligen“ Wetterzustand
+einzuführen, bei dem es zu starkem Nebel kommt bleiben den ganzen Tag über präsent.
+]]>
+        </de>
+        <ru>
+<![CDATA[
+Этот мод добавляет в игру различные состояния тумана в зависимости от погоды и времени суток. В общем, 
+во всех штатах тумана плотность тумана значительно увеличена.
+
+Возможны пять состояний:
+NONE - тумана нет вообще.
+HAZE - Туман в игре/карте по умолчанию.
+LIGHT
+MEDIUM
+HEAVY
+
+Эти состояния можно активировать вручную в любое время с помощью консольной команды «gsMoreFogSet <STATE>».
+
+ПРИМЕЧАНИЕ. Этот мод был протестирован только на нескольких картах с модом Relit и без него (из ModHub).
+Таким образом, разные карты с разными настройками освещения и любые моды, изменяющие освещение,
+могут иметь непреднамеренные визуальные взаимодействия. С туманом в FS22 немного сложно работать, и значения
+предоставляемые этим модом, могут работать не во всех сценариях.
+
+Если туман слишком яркий или слишком темный, отключите его с помощью «gsMoreFogSet NONE» или удалите мод. 
+
+В будущем я надеюсь создать настройку пользовательского интерфейса с глобальными масштабаторами плотности и
+высоты, но пока рано. версия этого не содержит. Я также надеюсь ввести погодный режим «Туманный», при котором
+сильный туман будет оставаться на месте в течение дня.
+]]>
+        </ru>
+    </description>
+
+    <iconFilename>icon_morefog.dds</iconFilename>
+    <multiplayer supported="true"/>
+
+    <extraSourceFiles>
+        <sourceFile filename="MoreFog.lua" />
+    </extraSourceFiles>
+</modDesc>
