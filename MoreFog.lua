@@ -97,6 +97,11 @@ function MoreFog:updatePrecipFog()
     local currentTemperature = self.weather:getCurrentTemperature()
     local _, _, isPrecip, willPrecip = self:getCurrentWeatherInfo()
 
+    print("MoreFog: Determining precip. " ..
+              string.format(
+            "isPrecip = %s, willPrecip = %s, isPrecipFogEnabled = %s, timeSinceLastRain = %s",
+            isPrecip, willPrecip, self.isPrecipFogEnabled, self.weather.timeSinceLastRain))
+
     if not self.isPrecipFogEnabled then
         if isPrecip and currentTemperature > 28 then
             self:toggleFog(true, MoreFog.const.FOG_RAIN_FADE_IN, MoreFog.FogType.HEAVY)
@@ -159,15 +164,19 @@ function MoreFog:getMorningFogType()
     local _, highTemp = self.weather:getCurrentMinMaxTemperatures()
     local currentWeather, nextWeather, _, _ = self:getCurrentWeatherInfo()
 
-    if rainedInLast4Hours and currentTemperature > 15 and currentWeather == WeatherType.SUN then
+    if rainedInLast4Hours and currentTemperature > 30 and currentWeather == WeatherType.SUN then
         return MoreFog.FogType.HEAVY
     end
 
-    if rainedInLast1Hour and currentTemperature < 15 then
+    if rainedInLast1Hour and currentTemperature < 26 then
         return MoreFog.FogType.HEAVY
     end
 
-    if currentTemperature > 30 then
+    if currentTemperature > 33 and currentWeather == WeatherType.SUN then
+        return MoreFog.FogType.MEDIUM
+    end
+
+    if currentTemperature > 26 then
         return MoreFog.FogType.LIGHT
     end
 
@@ -218,7 +227,8 @@ function MoreFog:getCurrentWeatherInfo()
 end
 
 function MoreFog:toggleFog(enable, fadeTimeHrs, fogType)
-    print(string.format("MoreFog: toggleFog(%s, %s, %s)", enable, fadeTimeHrs, fogType))
+    print(string.format("MoreFog: toggleFog(%s, %s, %s)", enable, fadeTimeHrs,
+        MoreFog.fogTypeToString(fogType)))
 
     if fogType ~= nil then
         self.weather.fog = self:getFogTableFromType(fogType)
@@ -274,6 +284,22 @@ function MoreFog:consoleCommandSetFog(fogType)
     return string.format(
         "Invalid fog type: %s | Valid types: 'NONE', 'HAZE', 'LIGHT', 'MEDIUM', or 'HEAVY'.",
         fogType)
+end
+
+function MoreFog.fogTypeToString(fogType)
+    if fogType == nil then
+        return "nil"
+    elseif fogType == MoreFog.FogType.NONE then
+        return "NONE"
+    elseif fogType == MoreFog.FogType.HEAVY then
+        return "HEAVY"
+    elseif fogType == MoreFog.FogType.MEDIUM then
+        return "MEDIUM"
+    elseif fogType == MoreFog.FogType.LIGHT then
+        return "LIGHT"
+    end
+
+    return "HAZE"
 end
 
 local function weatherLoad(weather)
