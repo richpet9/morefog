@@ -158,11 +158,9 @@ function MoreFog:getMorningFogType()
 end
 
 function MoreFog:getEveningFogType()
-    local timeSinceLastRain = self.weather.timeSinceLastRain
-    local rainedInLast4Hours = timeSinceLastRain ~= nil and timeSinceLastRain > 0 and
-                                   timeSinceLastRain < 5
-    local rainedInLast1Hour = timeSinceLastRain ~= nil and timeSinceLastRain > 0 and
-                                  timeSinceLastRain < 2
+    local timeSinceLastRain = self.weather:getTimeSinceLastRain()
+    local rainedInLast4Hours = timeSinceLastRain > 0 and timeSinceLastRain < 240
+    local rainedInLast1Hour = timeSinceLastRain > 0 and timeSinceLastRain < 60
     local currentTemperature = self.weather:getCurrentTemperature()
     local _, highTemp = self.weather:getCurrentMinMaxTemperatures()
     local isSunny, isCloudy, _, _ = self:getCurrentWeatherInfo()
