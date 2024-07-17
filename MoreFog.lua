@@ -152,7 +152,7 @@ function MoreFog:getMorningFogType()
         return MoreFog.FogType.LIGHT
     end
 
-    if self:getRandomSeasonFog(/* probabilityScaler= */ 1.0) then
+    if self:getRandomSeasonalFog(/* probabilityScaler= */ 1.0) then
         return MoreFog.FogType.LIGHT
     end
 
@@ -182,7 +182,7 @@ function MoreFog:getEveningFogType()
         return MoreFog.FogType.HAZE
     end
 
-    if self:getRandomSeasonFog(/* probabilityScaler= */ 0.5) then
+    if self:getRandomSeasonalFog(/* probabilityScaler= */ 0.5) then
         return MoreFog.FogType.HAZE
     end
 
@@ -217,7 +217,7 @@ function MoreFog:getFogTableFromType(fogType)
     return fog;
 end
 
-function MoreFog:getRandomSeasonFog(probabilityScaler)
+function MoreFog:getRandomSeasonalFog(probabilityScaler)
     return (self:isWinter() and math.random() > 0.25 * probabilityScaler) 
         or (self:isFall() and math.random() > 0.5 * probabilityScaler)
         or (self:isSpring() and math.random() > 0.65 * probabilityScaler)
