@@ -153,6 +153,7 @@ function MoreFog:getMorningFogType()
     end
 
     if self:getRandomSeasonalFog(/* probabilityScaler= */ 1.0) then
+        print("MoreFog: Setting fog from random seasonal fog.")
         return MoreFog.FogType.LIGHT
     end
 
@@ -183,6 +184,7 @@ function MoreFog:getEveningFogType()
     end
 
     if self:getRandomSeasonalFog(/* probabilityScaler= */ 0.5) then
+        print("MoreFog: Setting fog from random seasonal fog.")
         return MoreFog.FogType.HAZE
     end
 
