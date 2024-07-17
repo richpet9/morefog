@@ -152,11 +152,7 @@ function MoreFog:getMorningFogType()
         return MoreFog.FogType.LIGHT
     end
 
-    if self:isSunny() and math.random() > 0.66 then
-        return MoreFog.FogType.LIGHT
-    end
-
-    if self:isCloudy() and math.random() > 0.5 then
+    if self:getRandomSeasonFog(/* probabilityScaler= */ 1.0) then
         return MoreFog.FogType.LIGHT
     end
 
@@ -183,6 +179,10 @@ function MoreFog:getEveningFogType()
     end
 
     if self:isCloudy() then
+        return MoreFog.FogType.HAZE
+    end
+
+    if self:getRandomSeasonFog(/* probabilityScaler= */ 0.5) then
         return MoreFog.FogType.HAZE
     end
 
@@ -217,6 +217,13 @@ function MoreFog:getFogTableFromType(fogType)
     return fog;
 end
 
+function MoreFog:getRandomSeasonFog(probabilityScaler)
+    return (self:isWinter() and math.random() > 0.25 * probabilityScaler) 
+        or (self:isFall() and math.random() > 0.5 * probabilityScaler)
+        or (self:isSpring() and math.random() > 0.65 * probabilityScaler)
+        or (self:isSummer() and math.random() > 0.75 * probabilityScaler)
+end
+
 function MoreFog:isSunny() 
     return self.weather:getCurrentWeatherType() == WeatherType.SUN
 end
@@ -229,6 +236,26 @@ function MoreFog:willPrecip()
     local oneHr = 3600000
     local timeForFogFadeIn = oneHr * MoreFog.const.FOG_FADE_IN
     return self.weather:getTimeUntilRain() < timeForFogFadeIn
+end
+
+function MoreFog:isWinter()
+    local currentVisualSeason = self.environment.currentVisualSeason
+    return currentVisualSeason = Environment.SEASON.WINTER
+end
+
+function MoreFog:isSpring()
+    local currentVisualSeason = self.environment.currentVisualSeason
+    return currentVisualSeason = Environment.SEASON.SPRING
+end
+
+function MoreFog:isSummer()
+    local currentVisualSeason = self.environment.currentVisualSeason
+    return currentVisualSeason = Environment.SEASON.SUMMER
+end
+
+function MoreFog:isFall()
+    local currentVisualSeason = self.environment.currentVisualSeason
+    return currentVisualSeason = Environment.SEASON.FALL
 end
 
 function MoreFog:toggleFog(enable, fadeTimeHrs, fogType)
