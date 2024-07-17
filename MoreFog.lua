@@ -138,19 +138,27 @@ function MoreFog:getMorningFogType()
     local _, highTemp = self.weather:getCurrentMinMaxTemperatures()
     local isSunny, _, _, _ = self:getCurrentWeatherInfo()
 
-    if rainedInLast4Hours and currentTemperature > 30 and isSunny then
+    if rainedInLast1Hour and currentTemperature < 0 then
         return MoreFog.FogType.HEAVY
     end
 
-    if rainedInLast1Hour and currentTemperature < 26 then
-        return MoreFog.FogType.HEAVY
-    end
-
-    if currentTemperature > 33 and isSunny then
+    if rainedInLast1Hour and currentTemperature < 10 then
         return MoreFog.FogType.MEDIUM
     end
 
-    if currentTemperature > 26 then
+    if rainedInLast4Hours or isCloudy and currentTemperature < 0 then
+        return MoreFog.FogType.MEDIUM
+    end
+
+    if isSunny and currentTemperature < 15 then
+        return MoreFog.FogType.LIGHT
+    end
+
+    if isSunny and math.random() > 0.66 then
+        return MoreFog.FogType.LIGHT
+    end
+
+    if isCloudy and math.random() > 0.5 then
         return MoreFog.FogType.LIGHT
     end
 
