@@ -6,10 +6,8 @@ MoreFog = {}
 MoreFog.modName = g_currentModName
 
 MoreFog.const = {}
-MoreFog.const.MORNING_FOG_START = 4
-MoreFog.const.MORNING_FOG_END = 8
-MoreFog.const.EVENING_FOG_START = 17
-MoreFog.const.EVENING_FOG_END = 0
+MoreFog.const.FOG_EVENING_HOUR_START = 17
+MoreFog.const.FOG_EVENING_HOUR_END = 22
 
 MoreFog.const.FOG_FADE_IN = 3
 MoreFog.const.FOG_FADE_OUT = 3
@@ -52,6 +50,12 @@ function MoreFog:load()
     self.defaultFog.fadeIn = MoreFog.const.FOG_FADE_IN
     self.defaultFog.fadeOut = MoreFog.const.FOG_FADE_OUT
 
+    self.fogMorningStart = self.defaultFog.startHour - 1
+    self.fogMorningEnd = self.defaultFog.endHour
+
+    self.fogEveningStart = MoreFog.const.FOG_EVENING_HOUR_START
+    self.fogEveningEnd = MoreFog.const.FOG_EVENING_HOUR_END
+
     self.isPrecipFogEnabled = false
 
     g_messageCenter:unsubscribeAll(self)
@@ -74,21 +78,21 @@ function MoreFog:onMinuteChanged()
 end
 
 function MoreFog:updateMorningFog(currentHour)
-    if currentHour == MoreFog.const.MORNING_FOG_START then
+    if currentHour == self.fogMorningStart then
         self:toggleFog(true, MoreFog.const.FOG_FADE_IN, self:getMorningFogType())
-    elseif currentHour == MoreFog.const.MORNING_FOG_END then
+    elseif currentHour == self.fogMorningEnd then
         self:toggleFog(false, MoreFog.const.FOG_FADE_OUT)
-    elseif currentHour == MoreFog.const.MORNING_FOG_END + self.weather.fog.fadeOut then
+    elseif currentHour == self.fogMorningEnd + self.weather.fog.fadeOut then
         self:resetFog()
     end
 end
 
 function MoreFog:updateEveningFog(currentHour)
-    if currentHour == MoreFog.const.EVENING_FOG_START then
+    if currentHour == self.fogEveningStart then
         self:toggleFog(true, MoreFog.const.FOG_FADE_IN, self:getEveningFogType())
-    elseif currentHour == MoreFog.const.EVENING_FOG_END then
+    elseif currentHour == self.fogEveningEnd then
         self:toggleFog(false, MoreFog.const.FOG_FADE_OUT)
-    elseif currentHour == MoreFog.const.EVENING_FOG_END + self.weather.fog.fadeOut then
+    elseif currentHour == self.fogEveningEnd + self.weather.fog.fadeOut then
         self:resetFog()
     end
 end
@@ -119,11 +123,67 @@ function MoreFog:updatePrecipFog()
             self:toggleFog(true, MoreFog.const.FOG_RAIN_FADE_IN, MoreFog.FogType.HAZE)
             self.isPrecipFogEnabled = true
         end
-    elseif self.weather.timeSinceLastRain < 2 then
-        print("MoreFog: Resetting fog from precip")
+    elseif self.weather:getTimeSinceLastRain() > 120 then
+        print("MoreFog: Resetting fog from precip.")
         self:resetFog()
         self.isPrecipFogEnabled = false
     end
+end
+
+function MoreFog:getMorningFogType()
+    local timeSinceLastRain = self.weather:getTimeSinceLastRain()
+    local rainedInLast4Hours = timeSinceLastRain > 0 and timeSinceLastRain < 240
+    local rainedInLast1Hour = timeSinceLastRain > 0 and timeSinceLastRain < 60
+    local currentTemperature = self.weather:getCurrentTemperature()
+    local _, highTemp = self.weather:getCurrentMinMaxTemperatures()
+    local isSunny, _, _, _ = self:getCurrentWeatherInfo()
+
+    if rainedInLast4Hours and currentTemperature > 30 and isSunny then
+        return MoreFog.FogType.HEAVY
+    end
+
+    if rainedInLast1Hour and currentTemperature < 26 then
+        return MoreFog.FogType.HEAVY
+    end
+
+    if currentTemperature > 33 and isSunny then
+        return MoreFog.FogType.MEDIUM
+    end
+
+    if currentTemperature > 26 then
+        return MoreFog.FogType.LIGHT
+    end
+
+    return MoreFog.FogType.HAZE
+end
+
+function MoreFog:getEveningFogType()
+    local timeSinceLastRain = self.weather.timeSinceLastRain
+    local rainedInLast4Hours = timeSinceLastRain ~= nil and timeSinceLastRain > 0 and
+                                   timeSinceLastRain < 5
+    local rainedInLast1Hour = timeSinceLastRain ~= nil and timeSinceLastRain > 0 and
+                                  timeSinceLastRain < 2
+    local currentTemperature = self.weather:getCurrentTemperature()
+    local _, highTemp = self.weather:getCurrentMinMaxTemperatures()
+    local isSunny, isCloudy, _, _ = self:getCurrentWeatherInfo()
+
+    if rainedInLast1Hour and currentTemperature > 18 and isSunny then
+        return MoreFog.FogType.LIGHT
+    end
+
+    if rainedInLast4Hours and currentTemperature > 20 and isSunny then
+        return MoreFog.FogType.LIGHT
+    end
+
+    if highTemp - currentTemperature > 7 then
+        return MoreFog.FogType.LIGHT
+    end
+
+    if isCloudy then
+        return MoreFog.FogType.HAZE
+    end
+
+    return MoreFog.FogType.NONE
 end
 
 function MoreFog:getFogTableFromType(fogType)
@@ -154,76 +214,17 @@ function MoreFog:getFogTableFromType(fogType)
     return fog;
 end
 
-function MoreFog:getMorningFogType()
-    local timeSinceLastRain = self.weather.timeSinceLastRain
-    local rainedInLast4Hours = timeSinceLastRain ~= nil and timeSinceLastRain > 0 and
-                                   timeSinceLastRain < 5
-    local rainedInLast1Hour = timeSinceLastRain ~= nil and timeSinceLastRain > 0 and
-                                  timeSinceLastRain < 2
-    local currentTemperature = self.weather:getCurrentTemperature()
-    local _, highTemp = self.weather:getCurrentMinMaxTemperatures()
-    local currentWeather, nextWeather, _, _ = self:getCurrentWeatherInfo()
-
-    if rainedInLast4Hours and currentTemperature > 30 and currentWeather == WeatherType.SUN then
-        return MoreFog.FogType.HEAVY
-    end
-
-    if rainedInLast1Hour and currentTemperature < 26 then
-        return MoreFog.FogType.HEAVY
-    end
-
-    if currentTemperature > 33 and currentWeather == WeatherType.SUN then
-        return MoreFog.FogType.MEDIUM
-    end
-
-    if currentTemperature > 26 then
-        return MoreFog.FogType.LIGHT
-    end
-
-    return MoreFog.FogType.HAZE
-end
-
-function MoreFog:getEveningFogType()
-    local timeSinceLastRain = self.weather.timeSinceLastRain
-    local rainedInLast4Hours = timeSinceLastRain ~= nil and timeSinceLastRain > 0 and
-                                   timeSinceLastRain < 5
-    local rainedInLast1Hour = timeSinceLastRain ~= nil and timeSinceLastRain > 0 and
-                                  timeSinceLastRain < 2
-    local currentTemperature = self.weather:getCurrentTemperature()
-    local _, highTemp = self.weather:getCurrentMinMaxTemperatures()
-    local currentWeather, nextWeather, _, _ = self:getCurrentWeatherInfo()
-
-    if rainedInLast1Hour and currentTemperature > 18 and currentWeather == WeatherType.SUN then
-        return MoreFog.FogType.LIGHT
-    end
-
-    if rainedInLast4Hours and currentTemperature > 20 and currentWeather == WeatherType.SUN then
-        return MoreFog.FogType.LIGHT
-    end
-
-    if highTemp - currentTemperature > 7 then
-        return MoreFog.FogType.LIGHT
-    end
-
-    if currentWeather == WeatherType.CLOUDY then
-        return MoreFog.FogType.HAZE
-    end
-
-    return MoreFog.FogType.NONE
-end
-
 function MoreFog:getCurrentWeatherInfo()
     local oneHr = 3600000
-    local env = self.environment
-    local dayPlus1h, timePlus1h = env:getDayAndDayTime(env.dayTime + oneHr, env.currentMonotonicDay)
-
+    local timeForFog = oneHr * MoreFog.const.FOG_FADE_IN
     local currentWeather = self.weather:getCurrentWeatherType()
-    local nextWeather = self.weather:getNextWeatherType(dayPlus1h, timePlus1h)
 
-    local isPrecip = currentWeather == WeatherType.RAIN or currentWeather == WeatherType.SNOW
-    local willPrecip = nextWeather == WeatherType.RAIN or nextWeather == WeatherType.SNOW
+    local isSunny = currentWeather == WeatherType.SUN
+    local isSunny = isCloudy
+    local isPrecip = self.weather:getIsRaining()
+    local willPrecip = self.weather:getTimeUntilRain() < dayPlusFogTime
 
-    return currentWeather, nextWeather, isPrecip, willPrecip
+    return isSunny, isCloudy, isPrecip, willPrecip
 end
 
 function MoreFog:toggleFog(enable, fadeTimeHrs, fogType)
