@@ -104,8 +104,8 @@ function MoreFog:updatePrecipFog()
     print("MoreFog: Determining precip. " ..
               string.format(
             "isPrecip = %s, willPrecip = %s, isPrecipFogEnabled = %s, timeSinceLastRain = %s",
-            isPrecip, willPrecip, self.isPrecipFogEnabled, self.weather.timeSinceLastRain))
-
+            isPrecip, willPrecip, self.isPrecipFogEnabled, self.weather:getTimeSinceLastRain()))
+            
     if not self.isPrecipFogEnabled then
         if isPrecip and currentTemperature > 28 then
             self:toggleFog(true, MoreFog.const.FOG_RAIN_FADE_IN, MoreFog.FogType.HEAVY)
