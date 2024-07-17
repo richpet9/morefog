@@ -239,23 +239,19 @@ function MoreFog:willPrecip()
 end
 
 function MoreFog:isWinter()
-    local currentVisualSeason = self.environment.currentVisualSeason
-    return currentVisualSeason = Environment.SEASON.WINTER
+    return self.environment.currentVisualSeason = Environment.SEASON.WINTER
 end
 
 function MoreFog:isSpring()
-    local currentVisualSeason = self.environment.currentVisualSeason
-    return currentVisualSeason = Environment.SEASON.SPRING
+    return self.environment.currentVisualSeason = Environment.SEASON.SPRING
 end
 
 function MoreFog:isSummer()
-    local currentVisualSeason = self.environment.currentVisualSeason
-    return currentVisualSeason = Environment.SEASON.SUMMER
+    return self.environment.currentVisualSeason = Environment.SEASON.SUMMER
 end
 
 function MoreFog:isFall()
-    local currentVisualSeason = self.environment.currentVisualSeason
-    return currentVisualSeason = Environment.SEASON.FALL
+    return self.environment.currentVisualSeason = Environment.SEASON.FALL
 end
 
 function MoreFog:toggleFog(enable, fadeTimeHrs, fogType)
@@ -330,7 +326,6 @@ function MoreFog.fogTypeToString(fogType)
     elseif fogType == MoreFog.FogType.LIGHT then
         return "LIGHT"
     end
-
     return "HAZE"
 end
 
