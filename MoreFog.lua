@@ -103,8 +103,9 @@ function MoreFog:updatePrecipFog()
     print("MoreFog: Determining precip. " ..
               string.format(
             "isPrecip = %s, willPrecip = %s, isPrecipFogActive = %s, timeSinceLastRain = %s",
-            self.weather:getIsRaining(), self:willPrecip(), self.isPrecipFogActive, self.weather:getTimeSinceLastRain()))
-            
+            self.weather:getIsRaining(), self:willPrecip(), self.isPrecipFogActive,
+            self.weather:getTimeSinceLastRain()))
+
     if not self.isPrecipFogActive then
         if self.weather:getIsRaining() and currentTemperature > 28 then
             self:toggleFog(true, MoreFog.const.FOG_RAIN_FADE_IN, MoreFog.FogType.HEAVY)
@@ -152,7 +153,7 @@ function MoreFog:getMorningFogType()
         return MoreFog.FogType.LIGHT
     end
 
-    if self:getRandomSeasonalFog(/* probabilityScaler= */ 1.0) then
+    if self:getRandomSeasonalFog(1.0) then
         print("MoreFog: Setting fog from random seasonal fog.")
         return MoreFog.FogType.LIGHT
     end
@@ -183,7 +184,7 @@ function MoreFog:getEveningFogType()
         return MoreFog.FogType.HAZE
     end
 
-    if self:getRandomSeasonalFog(/* probabilityScaler= */ 0.5) then
+    if self:getRandomSeasonalFog(0.5) then
         print("MoreFog: Setting fog from random seasonal fog.")
         return MoreFog.FogType.HAZE
     end
@@ -220,40 +221,40 @@ function MoreFog:getFogTableFromType(fogType)
 end
 
 function MoreFog:getRandomSeasonalFog(probabilityScaler)
-    return (self:isWinter() and math.random() > 0.25 * probabilityScaler) 
-        or (self:isFall() and math.random() > 0.5 * probabilityScaler)
-        or (self:isSpring() and math.random() > 0.65 * probabilityScaler)
-        or (self:isSummer() and math.random() > 0.75 * probabilityScaler)
+    return (self:isWinter() and math.random() > 0.25 * probabilityScaler) or
+               (self:isFall() and math.random() > 0.5 * probabilityScaler) or
+               (self:isSpring() and math.random() > 0.65 * probabilityScaler) or
+               (self:isSummer() and math.random() > 0.75 * probabilityScaler)
 end
 
-function MoreFog:isSunny() 
+function MoreFog:isSunny()
     return self.weather:getCurrentWeatherType() == WeatherType.SUN
 end
 
-function MoreFog:isCloudy() 
+function MoreFog:isCloudy()
     return self.weather:getCurrentWeatherType() == WeatherType.CLOUDY
 end
 
-function MoreFog:willPrecip() 
+function MoreFog:willPrecip()
     local oneHr = 3600000
     local timeForFogFadeIn = oneHr * MoreFog.const.FOG_FADE_IN
     return self.weather:getTimeUntilRain() < timeForFogFadeIn
 end
 
 function MoreFog:isWinter()
-    return self.environment.currentVisualSeason = Environment.SEASON.WINTER
+    return self.environment.currentVisualSeason == Environment.SEASON.WINTER
 end
 
 function MoreFog:isSpring()
-    return self.environment.currentVisualSeason = Environment.SEASON.SPRING
+    return self.environment.currentVisualSeason == Environment.SEASON.SPRING
 end
 
 function MoreFog:isSummer()
-    return self.environment.currentVisualSeason = Environment.SEASON.SUMMER
+    return self.environment.currentVisualSeason == Environment.SEASON.SUMMER
 end
 
 function MoreFog:isFall()
-    return self.environment.currentVisualSeason = Environment.SEASON.FALL
+    return self.environment.currentVisualSeason == Environment.SEASON.FALL
 end
 
 function MoreFog:toggleFog(enable, fadeTimeHrs, fogType)
