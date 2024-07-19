@@ -21,6 +21,7 @@ NONE - No fog at all
 HAZE - Default game/map fog
 LIGHT
 MEDIUM
+HEAVY
 
 These states can be manually triggered at any time with the console command "gsMoreFogSet <STATE>".
 
@@ -43,6 +44,7 @@ NONE - Überhaupt kein Nebel
 HAZE - Standard-Spiel-/Kartennebel
 LIGHT
 MEDIUM
+HEAVY
 
 Diese Zustände können jederzeit manuell mit dem Konsolenbefehl „gsMoreFogSet <STATE>“ ausgelöst werden.
 
@@ -68,14 +70,13 @@ NONE - тумана нет вообще.
 HAZE - Туман в игре/карте по умолчанию.
 LIGHT
 MEDIUM
+HEAVY
 
 Эти состояния можно активировать вручную в любое время с помощью консольной команды «gsMoreFogSet <STATE>».
 
 ВАЖНО: В большинстве случаев мод Relight очень хорошо взаимодействует с этим модом. Однако определенные
-Изменения погоды (вариант «Облачность 4» и вариант «Дождь 4») могут привести к тому, что освещение станет
-очень темным. Если это произойдет, вы можете немедленно отключить туман с помощью команды «gsMoreFogSet NONE».
-я работаю на исправлении, но еще не обнаружил причину.
-
+Изменения погоды и их комбинации могут привести к тому, что освещение станет очень темным. Если это произойдет,
+вы можете немедленно отключите туман с помощью команды «gsMoreFogSet NONE».
 
 Если туман слишком яркий или слишком темный, отключите его с помощью «gsMoreFogSet NONE» или удалите мод. 
 
