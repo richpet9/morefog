@@ -29,7 +29,7 @@ IMPORTANT: In most cases the Relight mod will interact very nicely with this mod
 weather variations and combinations can cause the lighting to get very dark. If this happens, you can
 disable the fog immediately with the "gsMoreFogSet NONE" command.
 
-In the future I hope to create UI setting with global scalers for density and height, but this early
+In the future I hope to create UI settings with global scalers for density and height, but this early
 version does not contain that. I also hope to introduce a "Foggy" weather state, where heavy fog will
 remain present throughout the day.
 ]]>
