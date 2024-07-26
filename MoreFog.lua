@@ -288,32 +288,27 @@ function MoreFog:getHeightFromTime()
     end
 
     local dayMinute = hour * 60 + minute
-    -- Height will peak at hour 6 with a value of 120, and the lowest point is hour 12 with a
-    -- value of 70, on a 12-hour period. This helps avoid insanely bright fog duiring the hours 
+    -- Height will peak at hour 6 with a value of 125, and the lowest point is hour 12 with a
+    -- value of 75, on a 12-hour period. This helps avoid insanely bright fog duiring the hours 
     -- when the sun is low on the horizon.
-    return 25 * math.sin(math.pi / 360 * (dayMinute - 180)) + 95
+    return 25 * math.sin(math.pi / 360 * (dayMinute - 180)) + 100
 end
 
 function MoreFog:consoleCommandSetFog(fogType)
     if fogType == "NONE" then
-        self.weather.fog = self:getFogTableFromType(MoreFog.FogType.NONE)
-        self.weather:toggleFog(true, 0)
+        self:toggleFog(true, 0, MoreFog.FogType.NONE)
         return "Fog set to NONE."
     elseif fogType == "HAZE" then
-        self.weather.fog = self:getFogTableFromType(MoreFog.FogType.HAZE)
-        self.weather:toggleFog(true, 0)
+        self:toggleFog(true, 0, MoreFog.FogType.HAZE)
         return "Fog set to HAZE."
     elseif fogType == "LIGHT" then
-        self.weather.fog = self:getFogTableFromType(MoreFog.FogType.LIGHT)
-        self.weather:toggleFog(true, 0)
+        self:toggleFog(true, 0, MoreFog.FogType.LIGHT)
         return "Fog set to LIGHT."
     elseif fogType == "MEDIUM" then
-        self.weather.fog = self:getFogTableFromType(MoreFog.FogType.MEDIUM)
-        self.weather:toggleFog(true, 0)
+        self:toggleFog(true, 0, MoreFog.FogType.MEDIUM)
         return "Fog set to MEDIUM."
     elseif fogType == "HEAVY" then
-        self.weather.fog = self:getFogTableFromType(MoreFog.FogType.HEAVY)
-        self.weather:toggleFog(true, 0)
+        self:toggleFog(true, 0, MoreFog.FogType.HEAVY)
         return "Fog set to HEAVY."
     end
 
